@@ -1,5 +1,5 @@
 class TodoSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :content
+  attributes :content, :list_id
   # belongs_to :list
 end
