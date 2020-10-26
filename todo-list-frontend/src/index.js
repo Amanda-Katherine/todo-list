@@ -1,7 +1,29 @@
-
+  const header = document.getElementById("header")
   const form = document.getElementById('listForm')
+  const mainContainer = document.getElementById('container')
 
   form.addEventListener('submit', List.createList)
+  header.addEventListener('click', reset)
+
+  function reset(){
+    mainContainer.innerHTML = ''
+    mainContainer.innerHTML += `<form id="listForm">
+      <label for="">Name:</label>
+      <input type="text" id="listName">
+      <input type="submit" >
+    </form>`
+    addListeners()
+  }
+
+  function addListeners() {
+      const form = document.getElementById('listForm')
+      const div = document.createElement('div')
+      div.id = "listContainer"
+      mainContainer.append(div)
+      form.addEventListener('submit', List.createList)
+      List.renderLists()
+  }
+
 
   List.fetchLists()
 

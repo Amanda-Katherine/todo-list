@@ -32,6 +32,7 @@ class List {
     input.id = "content"
     label.innerText = "Content:"
     form.id = "todoForm"
+    ul.id = "listUl"
     form.append(label)
     form.append(input)
     form.append(btn)
