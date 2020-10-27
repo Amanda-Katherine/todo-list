@@ -47,7 +47,7 @@ class List {
     form.addEventListener('submit', this.submitTodo.bind(this))
   }
 
-  submitTodo(event){
+  submitTodo(){
     event.preventDefault()
     let content = document.getElementById("content").value
     let list_id = this.id
@@ -69,7 +69,7 @@ class List {
       let ul = document.querySelector("ul")
       list.todos.push(newTodo)
       ul.innerHTML += newTodo.todoHTML()
-    })
+    }).catch((err) => alert("There was a problem saving your todo!"))
   }
 
   // generateListHTML() {
@@ -92,7 +92,7 @@ class List {
       }
       this.renderLists()
 
-    })
+    }).catch(err => alert("There was a problem getting your lists!"))
   }
 
   static createList() {
@@ -114,7 +114,7 @@ class List {
     .then(listObj => {
       let newList = new List(listObj.data)
       newList.renderList()
-    })
+    }).catch((err) => alert("There was a problem saving your list!"))
   }
 
 
