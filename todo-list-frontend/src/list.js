@@ -47,11 +47,11 @@ class List {
     form.addEventListener('submit', this.submitTodo.bind(this))
   }
 
-  submitTodo(){
+  async submitTodo(){
     event.preventDefault()
     let content = document.getElementById("content").value
     let list_id = this.id
-    let todo = {todo: {content, list_id}}
+    let todo = {todo: {content, list_id}} // destructuring lines 52/53 -> keys and variable names must match
     let options = {
       method: "POST",
       headers: {"Content-Type": "application/json", "Accept": "application/json"},
@@ -59,22 +59,22 @@ class List {
     }
 
     document.getElementById("content").value = ""
+    try {
+      let response = await fetch("http://localhost:3000/todos", options)
+      let todo = await response.json()
+        if (todo.data) {
+          let newTodo = new Todo(todo.data)
+          let list = List.allLists.find(list => parseInt(list.id) === newTodo.listId)
+          let ul = document.querySelector("ul")
+          list.todos.push(newTodo)
+          ul.innerHTML += newTodo.todoHTML()
+        } else {
+          throw new Error(todo.message)
+        }
+    } catch(err) {
+      alert(err)
+    }
 
-    // destructuring lines 52/53 -> keys and variable names must match
-    fetch("http://localhost:3000/todos", options)
-    .then(response => response.json())
-    .then(todo => {
-      if (todo.data) {
-        let newTodo = new Todo(todo.data)
-        let list = List.allLists.find(list => parseInt(list.id) === newTodo.listId)
-        let ul = document.querySelector("ul")
-        list.todos.push(newTodo)
-        ul.innerHTML += newTodo.todoHTML()
-      } else {
-        throw new Error(todo.message)
-      }
-
-    }).catch((err) => alert(err))
   }
 
   // generateListHTML() {
