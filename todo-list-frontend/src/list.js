@@ -64,12 +64,17 @@ class List {
     fetch("http://localhost:3000/todos", options)
     .then(response => response.json())
     .then(todo => {
-      let newTodo = new Todo(todo.data)
-      let list = List.allLists.find(list => parseInt(list.id) === newTodo.listId)
-      let ul = document.querySelector("ul")
-      list.todos.push(newTodo)
-      ul.innerHTML += newTodo.todoHTML()
-    }).catch((err) => alert("There was a problem saving your todo!"))
+      if (todo.data) {
+        let newTodo = new Todo(todo.data)
+        let list = List.allLists.find(list => parseInt(list.id) === newTodo.listId)
+        let ul = document.querySelector("ul")
+        list.todos.push(newTodo)
+        ul.innerHTML += newTodo.todoHTML()
+      } else {
+        throw new Error(todo.message)
+      }
+
+    }).catch((err) => alert(err))
   }
 
   // generateListHTML() {
@@ -87,12 +92,16 @@ class List {
     fetch("http://localhost:3000/lists")
     .then(r => r.json())
     .then(lists => {
-      for (let list of lists.data) {
-        let newList = new List(list)
+      if (lists.data) {
+        for (let list of lists.data) {
+          let newList = new List(list)
+        }
+        this.renderLists()
+      } else {
+        throw new Error(lists.data)
       }
-      this.renderLists()
 
-    }).catch(err => alert("There was a problem getting your lists!"))
+    }).catch(err => alert(err))
   }
 
   static createList() {
@@ -112,9 +121,14 @@ class List {
     fetch("http://localhost:3000/lists", options)
     .then(r => r.json())
     .then(listObj => {
-      let newList = new List(listObj.data)
-      newList.renderList()
-    }).catch((err) => alert("There was a problem saving your list!"))
+      if (listObj.data) {
+        let newList = new List(listObj.data)
+        newList.renderList()
+      } else {
+        throw new Error(listObj.message)
+      }
+
+    }).catch((err) => alert(err))
   }
 
 

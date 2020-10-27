@@ -1,8 +1,12 @@
 class TodosController < ApplicationController
 
   def create
-    todo = Todo.create(todo_params)
-    render json: TodoSerializer.new(todo)
+    todo = Todo.new(todo_params)
+    if todo.save
+      render json: TodoSerializer.new(todo)
+    else
+        render json: {message: todo.errors.full_messages}
+      end
   end
 
   private

@@ -11,8 +11,12 @@ class ListsController < ApplicationController
   end
 
   def create
-    list = List.create(list_params)
-    render json: ListSerializer.new(list)
+    list = List.new(list_params)
+    if list.save
+      render json: ListSerializer.new(list)
+    else
+      render json: {message: list.errors.full_messages}
+    end
   end
 
   def destroy
